@@ -13,6 +13,8 @@
   <script src="https://watergis.github.io/mapbox-gl-legend/mapbox-gl-legend.js"></script>
   <!-- Custom Scroll bar CSS -->
   <link rel="stylesheet" href="css/simplebar.css" />
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
   <!-- Load the `mapbox-gl-geocoder` plugin. -->
   <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
@@ -21,6 +23,10 @@
   <script src="js/c3.min.js"></script>
   <!-- JQuery -->
   <script src="js/jquery-3.3.1.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
   <!-- Custom scroll bar -->
   <script src="js/simplebar.min.js"></script>
   <!-- Custom Colors -->
@@ -64,8 +70,8 @@
 
     .map-overlay {
       position: absolute;
-      width: 25%;
-      top: 227px;
+      width: 35%;
+      top: 120px;
       bottom: 0;
       left: 0;
       margin-left: 10px;
@@ -111,7 +117,7 @@
       width: 130px;
       background: #fff;
       margin-right: 20px;
-      margin-bottom: 285px;
+      margin-bottom: 310px;
       padding: 10px 20px 10px 10px;
       border-radius: 3px;
       text-align: center;
@@ -229,7 +235,7 @@
 
     .map-overlay .listing a {
       border-bottom: 1px solid teal;
-      color: gray;
+      color: #5e63e5;
       text-decoration: none;
     }
 
@@ -241,33 +247,90 @@
       background: #f0f0f0;
     }
 
-    .quake-info {
+    .zip-info {
       position: absolute;
       font-family: 'Open Sans', sans-serif;
       opacity: 80%;
-      margin-top: 125px;
+      margin-top: 7.4%;
       margin-left: 10px;
       padding: 5px;
-      width: 25%;
+      width: 7.1%;
       /* border: 2px solid black; */
-      font-size: 16px;
+      font-size: 32px;
       color: #222;
       background-color: #fff;
-      border-radius: 10px;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      text-align: center;
     }
+
+    .pop-info {
+      position: absolute;
+      font-family: 'Open Sans', sans-serif;
+      opacity: 80%;
+      margin-top: 7.4%;
+      margin-left: 8.33%;
+      padding: 5px;
+      width: 8.33%;
+      /* border: 2px solid black; */
+      font-size: 32px;
+      color: #222;
+      background-color: #fff;
+      border-radius: 0px;
+
+      text-align: center;
+    }
+
+    .popDen-info {
+      position: absolute;
+      font-family: 'Open Sans', sans-serif;
+      opacity: 80%;
+      margin-top: 7.4%;
+      margin-left: 17.3%;
+      padding: 5px;
+      width: 8.33%;
+      /* border: 2px solid black; */
+      font-size: 32px;
+      color: #222;
+      background-color: #fff;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      text-align: center;
+    }
+
     #list {
-          font-family: 'Open Sans', sans-serif;
-          font-size: 14pt;
-          text-align: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14pt;
+      text-align: center;
+      color: #5e63e5;
     }
+
     #listSub {
-          font-family: 'Open Sans', sans-serif;
-          font-size: 10pt;
-          text-align: center;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 10pt;
+      text-align: center;
     }
+
     .selection {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14pt;
       color: gray;
+      background-color: white;
       text-align: justify;
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+    }
+
+    #deck-2 {
+      color: #5e63e5;
+    }
+    .cardTitle {
+      font-size: 10pt;
+    }
+
+    .mapboxgl-ctrl-attrib-inner {
+      color: black;
+      opacity: .6;
     }
   </style>
 </head>
@@ -279,9 +342,10 @@
   <!-- Legend element -->
   <div id="legend"></div>
   <div id="legendZip"></div>
-  <div id="logo">
-    <img src="img/Target_Corporation_logo_(vector).svg" alt="targetLogo" width="35" height="35">
-  </div>
+  <div class="col-lg-4">
+    <div id="logo">
+      <img src="img/Target_Corporation_logo_(vector).svg" alt="targetLogo" width="35" height="35">
+    </div>
   </div>
   <div id="title">
     Target location rankings
@@ -292,21 +356,54 @@
   <div id="subtitleDate">
     Rankings based from date range 1/1/21 - 12/31/21
   </div>
+  </div>
+
+
+  <div class="col-lg-4">
+
+  </div>
   <div class="map-overlay">
+    <!-- Chart -->
+    <div id="deck-2" class="card-deck counts">
+      <div class="card">
+        <center>
+          <p class="cardTitle mb-0"><i class="fa-solid fa-envelopes-bulk"></i><strong> Zip Code</strong></p>
+          <div class="donutRange">
+            <span id="name" class="selection">Click</span>
+          </div>
+        </center>
+        <div id="donut-chart"></div>
+      </div>
+      <div class="card">
+        <center>
+          <p class="cardTitle mb-0"><i class="fa-solid fa-user"></i><strong> Population</strong></p>
+          <div class="donutRange">
+            <span id="pop" class="selection">on</span>
+          </div>
+        </center>
+        <div id="donut-chart2"></div>
+      </div>
+      <div class="card">
+        <center>
+          <p class="cardTitle mb-0"><i class="fa-solid fa-users"></i><strong> Pop. Density</strong></p>
+          <div class="donutRange">
+            <span id="popDensity" class="selection">map</span>
+          </div>
+        </center>
+        <div id="donut-chart2"></div>
+      </div>
+    </div>
+
+
+    <div id="list" class="mt-3">Target Location Rankings</div>
     <div id="listSub">Zoom in on map</div>
-    <div id="list">Target Location Rankings</div>
     <div id="feature-listing" class="listing"></div>
   </div>
+
   <!-- <div id="name">
     Click on map layers for more information
   </div> -->
-  <div class="quake-info">
-    <div id="list">Click on map</div>
-    <div><i class="fa-solid fa-envelopes-bulk"></i><strong> Zip Code:</strong>&nbsp;<span id="name" class="selection"></span></div>
-    <!-- <div><i class="fa-solid fa-cube"></i><strong> CBSAFP:</strong>&nbsp;<span id="cbsafp" class="selection"></span></div> -->
-    <div><i class="fa-solid fa-user"></i><strong> Population:</strong>&nbsp;<span id="pop" class="selection"></span></div>
-    <div><i class="fa-solid fa-users"></i><strong> Pop. Density:</strong>&nbsp;<span id="popDensity" class="selection"></span></div>
-  </div>
+
   <!-- <div class='map-overlay' id='features'><h2>Placer.ai Demo</h2><div id='pd'><p>Hover over a state!</p></div></div> -->
 
 
@@ -370,7 +467,7 @@
       if (features.length) {
         for (const feature of features) {
           const itemLink = document.createElement('a');
-          const label = `Rank: (${feature.properties.Rank}) ${d3.format(',')(feature.properties.visits)} Visits ${feature.properties.Name} `;
+          const label = `Rank: #${feature.properties.Rank} ${d3.format(',')(feature.properties.visits)} Visits ${feature.properties.Name} `;
           itemLink.textContent = label;
           itemLink.addEventListener('mouseover', () => {
             // Highlight corresponding feature on the map
@@ -590,10 +687,17 @@
           new mapboxgl.Popup()
             .setLngLat(event.features[0].geometry.coordinates)
             .setHTML(
-              `
-              <h3><span><img src="img/Target_Corporation_logo_(vector).svg" alt="targetLogo" width="25" height="25">${event.features[0].properties.Name}</h3></span>
-              <strong>Rank:</strong> ${event.features[0].properties.Rank}
-              <br> <strong>Total Visitors:</strong> ` + visitors
+              `<h3>
+                <span>
+                  <img src="img/Target_Corporation_logo_(vector).svg" alt="targetLogo" width="25" height="25">
+                    <strong>
+                      Rank: #
+                    </strong>
+                    ${event.features[0].properties.Rank}
+                    <br><strong>Total Visits:</strong> ` + visitors + `
+                    </h3>
+                </span>
+              ${event.features[0].properties.Name}`
             )
             .addTo(map);
         });

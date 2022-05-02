@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Placer Demo</title>
+
+    <!-- MapBox GL -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://watergis.github.io/mapbox-gl-legend/mapbox-gl-legend.js"></script>
+
+    <!-- Load the `mapbox-gl-geocoder` plugin. -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+    <!-- Data visualization JS libraries -->
+    <script src="js/d3.js"></script>
+    <script src="js/c3.min.js"></script>
+
+    <!-- JQuery -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+
+    <!-- Custom Colors -->
+    <script src="js/chroma.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/cfe8b4e9f5.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                  <img src="img/Target_Corporation_logo_(vector).svg" alt="targetLogo" width="35" height="35">
+                  <h1 class="h3 mb-0 ml-2 text-gray-800">Target location rankings</h1>
+                  <h6 class="h6 mb-0 ml-2 text-gray-800">Seattle-Tacoma-Bellevue CBSA</h6>
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Items - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                          <!-- github link -->
+                            <a class="nav-link" href="https://www.linkedin.com/in/benjaminantolin/" target="_blank" role="button">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown no-arrow">
+                          <!-- github link -->
+                            <a class="nav-link" href="https://github.com/benjiantolin/placer" target="_blank" role="button">
+                                <i class="fa-brands fa-github"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown no-arrow">
+                          <!-- github link -->
+                            <a class="nav-link" href="#" role="button">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                  <!-- Page Heading -->
+                  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                      <h5 class="h5 mb-0 text-gray-800">Rankings based from date range 1/1/21 - 12/31/21</h5>
+                  </div>
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Pie Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">List of Target Locations</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                  <div class="map-overlay">
+                                    <div id="listSub">Zoom in on map</div>
+                                    <div id="list">Target Location Rankings</div>
+                                    <div id="feature-listing" class="listing"></div>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <div id="legend"></div>
+                                  <div id="legendZip"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                          <!-- Content Row -->
+                          <div class="row">
+                              <!-- Earnings (Monthly) Card Example -->
+                              <div class="col-xl-4 col-md-6 mb-4">
+                                  <div class="card border-left-primary shadow h-100 py-2">
+                                      <div class="card-body">
+                                          <div class="row no-gutters align-items-center">
+                                              <div class="col mr-2">
+                                                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                      Zip Code</div>
+                                                  <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="totVisits"></span>$40,000</div>
+                                              </div>
+                                              <div class="col-auto">
+                                                  <i class="fa-solid fa-envelopes-bulk fa-2x text-gray-300"></i>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- Earnings (Monthly) Card Example -->
+                              <div class="col-xl-4 col-md-6 mb-4">
+                                  <div class="card border-left-success shadow h-100 py-2">
+                                      <div class="card-body">
+                                          <div class="row no-gutters align-items-center">
+                                              <div class="col mr-2">
+                                                  <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                      Population</div>
+                                                  <div class="h5 mb-0 font-weight-bold text-gray-800">215,000</div>
+                                              </div>
+                                              <div class="col-auto">
+                                                  <i class="fa-solid fa-user fa-2x text-gray-300"></i>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- Earnings (Monthly) Card Example -->
+                              <div class="col-xl-4 col-md-6 mb-4">
+                                  <div class="card border-left-info shadow h-100 py-2">
+                                      <div class="card-body">
+                                          <div class="row no-gutters align-items-center">
+                                              <div class="col mr-2">
+                                                  <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pop. Density
+                                                  </div>
+                                                  <div class="row no-gutters align-items-center">
+                                                      <div class="col-auto">
+                                                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">1236.2</div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="col-auto">
+                                                  <i class="fa-solid fa-users fa-2x text-gray-300"></i>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Click and zoom on map to filter data</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                      <!-- Map element -->
+                                      <div id='map'></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Placer.ai Demo 2022</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <script>
+      // MapBox Access Token
+      mapboxgl.accessToken = 'pk.eyJ1IjoiYmVuamlhbnRvbGluIiwiYSI6ImNqcm9uazFpczE1ajM0M3Buem83ZGpuY3oifQ.OpSUwJRtxBMPDFUUJnhLVg';
+
+      // Create map
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/benjiantolin/cl2mes51v000e14p2geyuykwf',
+        center: [-122.33383132609262, 47.60322155625301],
+        zoom: 8,
+        attributionControl: false
+      }).addControl(new mapboxgl.AttributionControl({
+        customAttribution: 'Map designed with ' + '<i class="fa-solid fa-heart" style="color: red"></i>' + ' by <a href="https://github.com/benjiantolin/placer" target="_blank">Benji Antolin</a>'
+      }));
+
+      // Add the controls to the map.
+      //Geocoder
+      map.addControl(
+        new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken,
+          mapboxgl: mapboxgl
+        })
+      );
+      //Add zoom in/out buttons
+      const nav = new mapboxgl.NavigationControl();
+      map.addControl(nav, 'top-right');
+      // Add Full screen mode
+      map.addControl(new mapboxgl.FullscreenControl({
+        container: document.querySelector('body')
+      }));
+      //Add map scale
+      const scale = new mapboxgl.ScaleControl({
+        maxWidth: 80,
+        unit: 'imperial'
+      });
+      map.addControl(scale);
+
+
+      // Create color scale
+      colorZip = ['#9ae2ef', '#77b8ca', '#65a5b8', '#5490a6', '#316e87'];
+      colorVenue = chroma.scale(['#4150f1', '#e784f0']).colors(5);
+
+      // Holds visible point features for filtering
+      let venuesTarget = [];
+
+      // Create a popup, but don't add it to the map yet.
+      const popup = new mapboxgl.Popup({
+        closeButton: true
+      });
+
+      const filterEl = document.getElementById('feature-filter');
+      const listingEl = document.getElementById('feature-listing');
+
+      function renderListings(features) {
+        const empty = document.createElement('p');
+        // Clear any existing listings
+        listingEl.innerHTML = '';
+        if (features.length) {
+          for (const feature of features) {
+            const itemLink = document.createElement('a');
+            const label = `Rank: (${feature.properties.Rank}) ${d3.format(',')(feature.properties.visits)} Visits ${feature.properties.Name} `;
+            itemLink.textContent = label;
+            itemLink.addEventListener('mouseover', () => {
+              // Highlight corresponding feature on the map
+              popup
+                .setLngLat(feature.geometry.coordinates)
+                .setHTML(label)
+                .addTo(map);
+            });
+            listingEl.appendChild(itemLink);
+          }
+
+        } else if (features.length === 0) {
+          listingEl.appendChild(empty);
+        } else {
+          listingEl.appendChild(empty);
+
+
+          // remove features filter
+          map.setFilter('venues-point', ['has', 'Rank']);
+        }
+      }
+
+      function normalize(string) {
+        return string.trim().toLowerCase();
+      }
+      // Because features come from tiled vector data,
+      // feature geometries may be split
+      // or duplicated across tile boundaries.
+      // As a result, features may appear
+      // multiple times in query results.
+      function getUniqueFeatures(features, comparatorProperty) {
+        const uniqueIds = new Set();
+        const uniqueFeatures = [];
+        for (const feature of features) {
+          const id = feature.properties[comparatorProperty];
+          if (!uniqueIds.has(id)) {
+            uniqueIds.add(id);
+            uniqueFeatures.push(feature);
+          }
+        }
+        return uniqueFeatures;
+      }
+      // Load data
+      Promise.all([
+        d3.json('assets/venues.geojson'), //datasets[0]
+        d3.json('assets/demo.geojson'), //datasets[1]
+      ]).then(function(datasets) {
+        // Load Ranked Venues csv
+        // let rankedVenues = datasets[0].forEach(function(d) {
+        //   const el = document.createElement('div');
+        //   el.className = 'marker';
+        //   // add markers to map
+        //   new mapboxgl.Marker(el)
+        //     .setLngLat([d.lng, d.lat])
+        //     .addTo(map);
+        // })
+
+        // Set Population Density classification
+        const popGrades = [286, 1823, 3692, 5435, 50019];
+        const visitorGrades = [1238722, 1344195, 1464677, 1533630, 2036124];
+        radii = [4, 8, 12, 16, 20];
+        radii = [4, 8, 12, 16, 20];
+        const rankGrades = ['Low', '', '', '', 'High'];
+
+        // Initial map load settings
+        map.on('load', () => {
+          // create legend
+          const legend = document.getElementById('legend');
+
+          //set up legend grades and labels
+          var labels = ['<strong>Visitor Rank</strong>'],
+            vbreak;
+          //iterate through grades and create a scaled circle and label for each
+          for (var i = 0; i < rankGrades.length; i++) {
+            vbreak = rankGrades[i];
+            // you need to manually adjust the radius of each dot on the legend
+            // in order to make sure the legend can be properly referred to the dot on the map.
+            dot_radii = 2 * radii[i];
+            labels.push(
+              '<p class="break"><i class="dot" style="background:' + colorVenue[i] + '; width: ' + dot_radii +
+              'px; height: ' +
+              dot_radii + 'px; "></i> <span class="dot-label" style="top: ' + dot_radii / 2 + 'px;">' + vbreak +
+              '</span></p>');
+
+          }
+          const source =
+            '<p style="text-align: right; font-size:10pt">Source: placer.ai</p>';
+
+          legend.innerHTML = labels.join('') + source;
+
+          // create legend for zipcodes
+          const legendZip = document.getElementById('legendZip');
+
+          //set up legend grades and labels
+          var labelsZip = ['<strong>Pop. Density</strong>'],
+            vbreakZip;
+          //iterate through grades and create a scaled circle and label for each
+          for (var i = 0; i < rankGrades.length; i++) {
+            vbreakZip = rankGrades[i];
+            // you need to manually adjust the radius of each dot on the legend
+            // in order to make sure the legend can be properly referred to the dot on the map.
+            dot_radiiZip = 2 * radii[i];
+            labelsZip.push(
+              '<p class="break"><i class="square" style="background:' + colorZip[i] + '; width:16px; height: 16px; "></i> <span class="dot-label">' + vbreakZip +
+              '</span></p>');
+
+          }
+          const sourceZip =
+            '<p style="text-align: right; font-size:10pt">Source: 2019 ACS</p>';
+
+          legendZip.innerHTML = labelsZip.join('') + sourceZip;
+
+          map.addSource('venues', {
+            type: 'geojson',
+            data: 'assets/venues.geojson'
+          });
+
+          map.addLayer({
+              'id': 'venues-point',
+              'type': 'circle',
+              'source': 'venues',
+              'minzoom': 5,
+              'paint': {
+                // increase the radii of the circle as the zoom level and dbh value increases
+                'circle-radius': {
+                  'property': 'visits',
+                  'stops': [
+                    [{
+                      zoom: 5,
+                      value: visitorGrades[0]
+                    }, radii[0]],
+                    [{
+                      zoom: 5,
+                      value: visitorGrades[1]
+                    }, radii[1]],
+                    [{
+                      zoom: 5,
+                      value: visitorGrades[2]
+                    }, radii[2]],
+                    [{
+                      zoom: 5,
+                      value: visitorGrades[3]
+                    }, radii[3]],
+                    [{
+                      zoom: 5,
+                      value: visitorGrades[4]
+                    }, radii[4]]
+                  ]
+                },
+                'circle-color': {
+                  'property': 'visits',
+                  'stops': [
+                    [visitorGrades[0], colorVenue[0]],
+                    [visitorGrades[1], colorVenue[1]],
+                    [visitorGrades[2], colorVenue[2]],
+                    [visitorGrades[3], colorVenue[3]],
+                    [visitorGrades[4], colorVenue[4]]
+                  ]
+                },
+                'circle-stroke-color': 'white',
+                'circle-stroke-width': 1,
+                'circle-opacity': .7
+              }
+            },
+            'waterway-label'
+          );
+
+          map.on('movestart', () => {
+            // reset features filter as the map starts moving
+            map.setFilter('venues-point', ['has', 'Rank']);
+          });
+          map.on('moveend', () => {
+            const features = map.queryRenderedFeatures({
+              layers: ['venues-point']
+            });
+
+            if (features) {
+              const uniqueFeatures = getUniqueFeatures(features, 'Rank');
+              // Populate features for the listing overlay.
+              renderListings(uniqueFeatures);
+
+              // Store the current features in sn `Target Ranks` variable to
+              // later use for filtering on `keyup`.
+              venuesTarget = uniqueFeatures;
+            }
+          });
+
+          map.on('mousemove', 'venues-point', (e) => {
+            // Change the cursor style as a UI indicator.
+            map.getCanvas().style.cursor = 'pointer';
+
+            // Populate the popup and set its coordinates based on the feature.
+            // const feature = e.features[0];
+            // popup
+            //   .setLngLat(feature.geometry.coordinates)
+            //   .setHTML(
+            //     `<h4>${feature.properties.Name}</h4>
+            //     <strong>Rank: </strong>${feature.properties.Rank} <br>
+            //     <strong>Total Visitors: </strong>${feature.properties.visitors}
+            //     `
+            //   )
+            //   .addTo(map);
+          });
+
+          map.on('mouseleave', 'venues-point', () => {
+            map.getCanvas().style.cursor = '';
+            popup.remove();
+          });
+
+          // Call this function on initialization
+          // passing an empty array to render an empty state
+          renderListings([]);
+
+          // click on circle to view venue in a popup
+          map.on('click', 'venues-point', (event) => {
+            visitors = d3.format(',')(event.features[0].properties.visits);
+            new mapboxgl.Popup()
+              .setLngLat(event.features[0].geometry.coordinates)
+              .setHTML(
+                `
+                <h3><span><img src="img/Target_Corporation_logo_(vector).svg" alt="targetLogo" width="25" height="25">${event.features[0].properties.Name}</h3></span>
+                <strong>Rank:</strong> ${event.features[0].properties.Rank}
+                <br> <strong>Total Visitors:</strong> ` + visitors
+              )
+              .addTo(map);
+          });
+
+          //Add zipcode layer to map
+          map.addSource('zipcodes', {
+            type: 'geojson',
+            data: 'assets/demo.geojson'
+          });
+
+          map.addLayer({
+            'id': 'zipcode-layer',
+            'type': 'fill',
+            'source': 'zipcodes',
+            'layout': {},
+            'paint': {
+              'fill-color': {
+                'property': 'popDensity',
+                'stops': [
+                  [popGrades[0], colorZip[0]],
+                  [popGrades[1], colorZip[1]],
+                  [popGrades[2], colorZip[2]],
+                  [popGrades[3], colorZip[3]],
+                  [popGrades[4], colorZip[4]],
+                ]
+              },
+              'fill-opacity': 0
+            }
+          });
+
+
+          // click on tree to view magnitude in a popup
+          map.on('click', 'zipcode-layer', (event) => {
+            pop = d3.format(',')(event.features[0].properties.pop);
+            popDen = d3.format(',.5r')(event.features[0].properties.popDensity);
+            $('#name').text(event.features[0].properties.Zip_code);
+            // $('#cbsafp').text(event.features[0].properties.CBSAFP);
+            $('#pop').text(pop);
+            $('#popDensity').text(popDen);
+            // new mapboxgl.Popup()
+            //   .setLngLat(event.lngLat)
+            //   .setHTML(
+            //     `<h3>Zipcode: ${event.features[0].properties.Zip_code}</h3>
+            //         <strong>Population Density:</strong> ` + popDen +
+            //     '<br><strong>Population:</strong> ' + pop
+            //   )
+            //   .addTo(map);
+          });
+
+
+          // Change the cursor to a pointer when
+          // the mouse is over the states layer.
+          map.on('mouseenter', 'zipcode-layer', () => {
+            map.getCanvas().style.cursor = 'pointer';
+          });
+
+          // Change the cursor back to a pointer
+          // when it leaves the states layer.
+          map.on('mouseleave', 'zipcode-layer', () => {
+            map.getCanvas().style.cursor = '';
+          });
+
+        });
+
+
+
+      })
+    </script>
+
+</body>
+
+</html>

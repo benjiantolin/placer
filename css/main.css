@@ -1,0 +1,211 @@
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/**
+* Set rules for how the map overlays
+* (information box and legend) will be displayed
+* on the page. */
+
+.map-overlay {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  font: 13px/20px 'Open Sans', sans-serif;
+  background-color: #fff;
+  max-height: 60%;
+  overflow: hidden;
+  opacity: 80%;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+#features {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 30%;
+  overflow: auto;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* the layout of the legend panel */
+#legend {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 130px;
+  background: #fff;
+  /* margin-right: 20px;
+  margin-bottom: 25px; */
+  padding: 10px 20px 10px 10px;
+  border-radius: 3px;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  opacity: 80%;
+}
+
+#legendZip {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 130px;
+  background: #fff;
+  /* margin-right: 20px;
+  margin-bottom: 285px; */
+  padding: 10px 20px 10px 10px;
+  border-radius: 3px;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  opacity: 80%;
+}
+
+
+/* each line for a break */
+.break {
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* basic style for a dot/circle */
+.dot {
+  display: inline-block;
+  margin-top: 5px;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+/* basic style for a dot/circle */
+.square {
+  display: inline-block;
+  margin-top: 5px;
+  border-radius: 25%;
+  opacity: 1;
+}
+
+/* the label for the dot */
+.dot-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-style: italic;
+}
+
+/* the text color of a hyper link */
+a {
+  color: black
+}
+
+#title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 20px;
+  margin-left: 60px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 25pt;
+  color: white
+}
+
+#logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 28px;
+  margin-left: 20px;
+}
+
+#subtitleLocation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 70px;
+  margin-left: 25px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15pt;
+  color: white
+}
+
+#subtitleDate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 90px;
+  margin-left: 25px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12pt;
+  color: white
+}
+
+.marker {
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/9a/Target_logo.svg');
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.map-overlay input {
+  display: block;
+  border: none;
+  width: 100%;
+  border-radius: 3px;
+  padding: 10px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.map-overlay .listing {
+  overflow: auto;
+  max-height: 100%;
+}
+
+.map-overlay .listing>* {
+  display: block;
+  padding: 5px 10px;
+  margin: 0;
+}
+
+.map-overlay .listing a {
+  border-bottom: 1px solid teal;
+  color: gray;
+  text-decoration: none;
+}
+
+.map-overlay .listing a:last-child {
+  border: none;
+}
+
+.map-overlay .listing a:hover {
+  background: #f0f0f0;
+}
+
+#list {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14pt;
+  text-align: center;
+}
+
+#listSub {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 10pt;
+  text-align: center;
+}
+
+.selection {
+  color: gray;
+  text-align: justify;
+}
+
+.chart-area {
+    position: relative;
+    height: 40rem !important;
+    width: 100%;
+}

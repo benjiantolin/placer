@@ -324,6 +324,7 @@
     #deck-2 {
       color: #5e63e5;
     }
+
     .cardTitle {
       font-size: 10pt;
     }
@@ -411,12 +412,19 @@
     // MapBox Access Token
     mapboxgl.accessToken = 'pk.eyJ1IjoiYmVuamlhbnRvbGluIiwiYSI6ImNqcm9uazFpczE1ajM0M3Buem83ZGpuY3oifQ.OpSUwJRtxBMPDFUUJnhLVg';
 
+    // Set bounds to San Francisco, California.
+    const bounds = [
+      [-124.049, 46.244], // Southwest coordinates
+      [-120.452, 49.042] // Northeast coordinates
+    ];
+
     // Create map
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/benjiantolin/cl2mes51v000e14p2geyuykwf',
       center: [-122.33383132609262, 47.60322155625301],
       zoom: 8,
+      maxBounds: bounds, // Set the map's geographical boundaries.
       attributionControl: false
     }).addControl(new mapboxgl.AttributionControl({
       customAttribution: 'Map designed with ' + '<i class="fa-solid fa-heart" style="color: red"></i>' + ' by <a href="https://github.com/benjiantolin/placer" target="_blank">Benji Antolin</a>'
@@ -446,7 +454,8 @@
 
 
     // Create color scale
-    colorZip = ['#9ae2ef', '#77b8ca', '#65a5b8', '#5490a6', '#316e87'];
+    colorZipBlue = ['#9ae2ef', '#77b8ca', '#65a5b8', '#5490a6', '#316e87'];
+    colorZipGreen = ['#cef8b9', '#8cd06d', '#70b950', '#58a437', '#297901'];
     colorVenue = chroma.scale(['#4150f1', '#e784f0']).colors(5);
 
     // Holds visible point features for filtering
@@ -571,7 +580,7 @@
           // in order to make sure the legend can be properly referred to the dot on the map.
           dot_radiiZip = 2 * radii[i];
           labelsZip.push(
-            '<p class="break"><i class="square" style="background:' + colorZip[i] + '; width:16px; height: 16px; "></i> <span class="dot-label">' + vbreakZip +
+            '<p class="break"><i class="square" style="background:' + colorZipBlue[i] + '; width:16px; height: 16px; "></i> <span class="dot-label">' + vbreakZip +
             '</span></p>');
 
         }
@@ -717,11 +726,11 @@
             'fill-color': {
               'property': 'popDensity',
               'stops': [
-                [popGrades[0], colorZip[0]],
-                [popGrades[1], colorZip[1]],
-                [popGrades[2], colorZip[2]],
-                [popGrades[3], colorZip[3]],
-                [popGrades[4], colorZip[4]],
+                [popGrades[0], colorZipBlue[0]],
+                [popGrades[1], colorZipBlue[1]],
+                [popGrades[2], colorZipBlue[2]],
+                [popGrades[3], colorZipBlue[3]],
+                [popGrades[4], colorZipBlue[4]],
               ]
             },
             'fill-opacity': 0

@@ -99,7 +99,7 @@
       position: absolute;
       bottom: 0;
       right: 0;
-      width: 130px;
+      width: 175px;
       background: #fff;
       margin-right: 20px;
       margin-bottom: 25px;
@@ -114,10 +114,10 @@
       position: absolute;
       bottom: 0;
       right: 0;
-      width: 130px;
+      width: 175px;
       background: #fff;
       margin-right: 20px;
-      margin-bottom: 310px;
+      margin-bottom: 306px;
       padding: 10px 20px 10px 10px;
       border-radius: 3px;
       text-align: center;
@@ -136,7 +136,7 @@
     /* basic style for a dot/circle */
     .dot {
       display: inline-block;
-      margin-top: 5px;
+      margin-top: 2px;
       border-radius: 50%;
       opacity: 0.6;
     }
@@ -144,7 +144,7 @@
     /* basic style for a dot/circle */
     .square {
       display: inline-block;
-      margin-top: 5px;
+      margin-top: 2px;
       border-radius: 25%;
       opacity: 1;
     }
@@ -247,57 +247,6 @@
       background: #f0f0f0;
     }
 
-    .zip-info {
-      position: absolute;
-      font-family: 'Open Sans', sans-serif;
-      opacity: 80%;
-      margin-top: 7.4%;
-      margin-left: 10px;
-      padding: 5px;
-      width: 7.1%;
-      /* border: 2px solid black; */
-      font-size: 32px;
-      color: #222;
-      background-color: #fff;
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
-      text-align: center;
-    }
-
-    .pop-info {
-      position: absolute;
-      font-family: 'Open Sans', sans-serif;
-      opacity: 80%;
-      margin-top: 7.4%;
-      margin-left: 8.33%;
-      padding: 5px;
-      width: 8.33%;
-      /* border: 2px solid black; */
-      font-size: 32px;
-      color: #222;
-      background-color: #fff;
-      border-radius: 0px;
-
-      text-align: center;
-    }
-
-    .popDen-info {
-      position: absolute;
-      font-family: 'Open Sans', sans-serif;
-      opacity: 80%;
-      margin-top: 7.4%;
-      margin-left: 17.3%;
-      padding: 5px;
-      width: 8.33%;
-      /* border: 2px solid black; */
-      font-size: 32px;
-      color: #222;
-      background-color: #fff;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      text-align: center;
-    }
-
     #list {
       font-family: 'Open Sans', sans-serif;
       font-size: 14pt;
@@ -332,6 +281,13 @@
     .mapboxgl-ctrl-attrib-inner {
       color: black;
       opacity: .6;
+    }
+
+    #menu {
+      position: absolute;
+      background: #efefef;
+      padding: 10px;
+      font-family: 'Open Sans', sans-serif;
     }
   </style>
 </head>
@@ -400,7 +356,12 @@
     <div id="listSub">Zoom in on map</div>
     <div id="feature-listing" class="listing"></div>
   </div>
-
+  <!-- <div id="menu">
+  <input id="cl2mes51v000e14p2geyuykwf" type="radio" name="rtoggle" value="cl2mes51v000e14p2geyuykwf" checked="checked">
+  <label for="cl2mes51v000e14p2geyuykwf">Population Density</label>
+  <input id="cl2pmhpff001y15o8l3gdoz4p" type="radio" name="rtoggle" value="cl2pmhpff001y15o8l3gdoz4p">
+  <label for="cl2pmhpff001y15o8l3gdoz4p">Population</label>
+  </div> -->
   <!-- <div id="name">
     Click on map layers for more information
   </div> -->
@@ -412,19 +373,12 @@
     // MapBox Access Token
     mapboxgl.accessToken = 'pk.eyJ1IjoiYmVuamlhbnRvbGluIiwiYSI6ImNqcm9uazFpczE1ajM0M3Buem83ZGpuY3oifQ.OpSUwJRtxBMPDFUUJnhLVg';
 
-    // Set bounds to San Francisco, California.
-    const bounds = [
-      [-124.049, 46.244], // Southwest coordinates
-      [-120.452, 49.042] // Northeast coordinates
-    ];
-
     // Create map
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/benjiantolin/cl2mes51v000e14p2geyuykwf',
       center: [-122.33383132609262, 47.60322155625301],
       zoom: 8,
-      maxBounds: bounds, // Set the map's geographical boundaries.
       attributionControl: false
     }).addControl(new mapboxgl.AttributionControl({
       customAttribution: 'Map designed with ' + '<i class="fa-solid fa-heart" style="color: red"></i>' + ' by <a href="https://github.com/benjiantolin/placer" target="_blank">Benji Antolin</a>'
@@ -537,8 +491,7 @@
       // Set Population Density classification
       const popGrades = [286, 1823, 3692, 5435, 50019];
       const visitorGrades = [1238722, 1344195, 1464677, 1533630, 2036124];
-      radii = [4, 8, 12, 16, 20];
-      radii = [4, 8, 12, 16, 20];
+      radii = [5, 10, 15, 20, 25];
       const rankGrades = ['Low', '', '', '', 'High'];
 
       // Initial map load settings
